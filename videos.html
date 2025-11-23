@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Vídeos Exclusivos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            background: rgba(255, 0, 102, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #ff0066;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #ccc;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff0066;
+            box-shadow: 0 10px 30px rgba(255, 0, 102, 0.3);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(45deg, #ff0066, #ff6699);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+            position: relative;
+        }
+
+        .video-thumbnail::before {
+            content: '▶';
+            position: absolute;
+            font-size: 3em;
+            opacity: 0.8;
+        }
+
+        .video-info {
+            padding: 15px;
+        }
+
+        .video-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #ff0066;
+        }
+
+        .video-description {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        /* Modal para exibir o vídeo */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 900px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(255, 0, 102, 0.3);
+        }
+
+        .modal-header {
+            padding: 20px;
+            background: rgba(255, 0, 102, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            color: #ff0066;
+        }
+
+        .close-btn {
+            background: #ff0066;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #e6005c;
+            transform: rotate(90deg);
+        }
+
+        .modal-video {
+            width: 100%;
+            max-height: 70vh;
+            background: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>💕 Meus Vídeos Exclusivos 💕</h1>
+        <p>Conteúdo especial só para você!</p>
+    </div>
+
+    <div class="video-grid" id="videoGrid"></div>
+
+    <!-- Modal -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">Vídeo 1</span>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <video class="modal-video" id="modalVideo" controls autoplay>
+                Seu navegador não suporta a tag de vídeo.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        const totalVideos = 30;
+        const videoGrid = document.getElementById('videoGrid');
+        const modal = document.getElementById('videoModal');
+        const modalVideo = document.getElementById('modalVideo');
+        const modalTitle = document.getElementById('modalTitle');
+
+        // Criar os cards dos vídeos automaticamente
+        for (let i = 1; i <= totalVideos; i++) {
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.onclick = () => openVideo(i);
+
+            card.innerHTML = `
+                <div class="video-thumbnail">${i}</div>
+                <div class="video-info">
+                    <div class="video-title">Vídeo ${i}</div>
+                    <div class="video-description">Clique para assistir</div>
+                </div>
+            `;
+            videoGrid.appendChild(card);
+        }
+
+        // Abrir vídeo no modal (usando MinIO)
+        function openVideo(videoNumber) {
+            const videoPath = `https://s3-cf.zapsafe.work/mude/video ${videoNumber}.mp4`;
+            modalVideo.src = videoPath;
+            modalTitle.textContent = "Vídeo " + videoNumber;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Fechar modal
+        function closeModal() {
+            modal.classList.remove('active');
+            modalVideo.pause();
+            modalVideo.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Fechar clicando fora
+        modal.onclick = function(e) {
+            if (e.target === modal) closeModal();
+        };
+
+        // Fechar com ESC
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
