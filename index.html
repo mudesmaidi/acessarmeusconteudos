@@ -14,12 +14,17 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'Seupixel');
+
+      fbq('init', '1032225729043782');
       fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"
-    /></noscript>
+
+    <noscript>
+      <img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"
+      />
+    </noscript>
+
     <style>
         body {
             margin: 0;
@@ -136,7 +141,6 @@
 
     <div class="popup" id="quizPopup">
         <div class="popup-content">
-            <!-- Caminho corrigido -->
             <img src="perfil.jpg" alt="Avatar">
             <h2 id="questionTitle">Você tem mais de 18 anos?</h2>
             <p id="questionText">Você quer ver meus conteúdos, mas antes me responda por favor</p>
@@ -202,7 +206,7 @@
         function validatePassword() {
             const userPassword = passwordInput.value;
 
-            // Senha alterada para 2231
+            /* AQUI FOI ALTERADO: SENHA → 2231 */
             if (userPassword === '2231') { 
                 fbq('track', 'Purchase', {
                     value: 1.00,
