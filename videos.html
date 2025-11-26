@@ -4,6 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meus Vídeos Exclusivos</title>
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      
+      fbq('init', '1032225729043782');
+      fbq('track', 'PageView');
+      
+      // Dispara o evento novamente após o script carregar completamente
+      window.addEventListener('load', function() {
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'PageView');
+        }
+      });
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+
     <style>
         * {
             margin: 0;
@@ -221,6 +248,18 @@
             modalTitle.textContent = "Vídeo " + videoNumber;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
+
+            // 🎯 PIXEL: Dispara evento ViewContent quando alguém clica em um vídeo
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'ViewContent', {
+                    content_name: 'Video_' + videoNumber,
+                    content_category: 'Videos_Exclusivos',
+                    content_ids: ['video_' + videoNumber],
+                    content_type: 'video',
+                    value: 0.50, // Valor simbólico por visualização
+                    currency: 'BRL'
+                });
+            }
         }
 
         // Fechar modal
