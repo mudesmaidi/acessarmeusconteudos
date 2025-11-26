@@ -5,25 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy - Meus Conteúdos!</title>
 
+    <!-- Meta Pixel Code -->
     <script>
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)}; 
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
       if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
       n.queue=[];t=b.createElement(e);t.async=!0;
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-
       fbq('init', '1032225729043782');
       fbq('track', 'PageView');
     </script>
-
-    <noscript>
-      <img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"
-      />
-    </noscript>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
 
     <style>
         body {
@@ -206,15 +204,17 @@
         function validatePassword() {
             const userPassword = passwordInput.value;
 
-            /* AQUI FOI ALTERADO: SENHA → 2231 */
-            if (userPassword === '2231') { 
-                fbq('track', 'Purchase', {
-                    value: 1.00,
-                    currency: 'BRL',
-                    content_name: 'Acesso_Videos_Nomemodelo',
-                    content_category: 'Conteudo_Exclusivo',
-                    num_items: 30 
-                });
+            if (userPassword === 'SENHA') { 
+                // Dispara evento de conversão apenas uma vez
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Purchase', {
+                        value: 1.00,
+                        currency: 'BRL',
+                        content_name: 'Acesso_Videos_Nomemodelo',
+                        content_category: 'Conteudo_Exclusivo',
+                        num_items: 30 
+                    });
+                }
                 
                 window.location.href = '/videos.html';
             } else {              
