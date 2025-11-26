@@ -15,8 +15,16 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
+      
       fbq('init', '1032225729043782');
       fbq('track', 'PageView');
+      
+      // Dispara o evento novamente após o script carregar completamente
+      window.addEventListener('load', function() {
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'PageView');
+        }
+      });
     </script>
     <noscript><img height="1" width="1" style="display:none"
       src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"
@@ -201,10 +209,14 @@
             }
         }
 
+        // ⚠️ SENHA FIXA - NÃO ALTERAR - SENHA: 2231
+        const SENHA_CORRETA = '2231'; // ← SENHA BLOQUEADA: 2231
+        
         function validatePassword() {
             const userPassword = passwordInput.value;
 
-            if (userPassword === 'SENHA') { 
+            // Validação com senha fixa 2231
+            if (userPassword === SENHA_CORRETA) { 
                 // Dispara evento de conversão apenas uma vez
                 if (typeof fbq !== 'undefined') {
                     fbq('track', 'Purchase', {
@@ -225,6 +237,7 @@
                 passwordInput.classList.add('error');
             }
         }
+        // ⚠️ FIM DA VALIDAÇÃO - SENHA FIXA: 2231
 
         confirmButton.onclick = loadNextQuestion;
         alternativeOption.onclick = function(event) {
