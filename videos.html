@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meus Vídeos Exclusivos</title>
 
-    <!-- Pixel Meta -->
+    <!-- Facebook Pixel -->
     <script>
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -16,9 +16,13 @@
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
 
-      fbq('init', '1032225729043782');
+      fbq('init', '793871343759983');
       fbq('track', 'PageView');
     </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=793871343759983&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel -->
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -152,7 +156,7 @@
         // Abrir vídeo
         function openVideo(num) {
 
-            // 🔥 TRACKING IMPORTANTE
+            // 🔥 Evento customizado do Pixel
             fbq('trackCustom', 'AssistiuVideo', {
                 numero: num
             });
