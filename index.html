@@ -5,27 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy - Meus Conteúdos!</title>
 
-    <!-- Meta Pixel Code -->
     <script>
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)}; 
       if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
       n.queue=[];t=b.createElement(e);t.async=!0;
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-
-      fbq('init', '1032225729043782');
+      fbq('init', '793871343759983');
       fbq('track', 'PageView');
-      fbq('track', 'ViewContent');  /* 🔥 Evento importante */
     </script>
-
-    <noscript>
-        <img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"/>
-    </noscript>
-
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=793871343759983&ev=PageView&noscript=1"
+    /></noscript>
     <style>
         body {
             margin: 0;
@@ -68,36 +62,73 @@
             margin-bottom: 10px;
         }
 
-        /* 🔥 BOTÃO IGUAL AO DO SEU PRINT */
-        #confirmButton {
+        .popup-content h2 {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        .popup-content p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .popup-content input[type="password"] {
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .popup-content input[type="password"].error {
+            border-color: red;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        .error-box {
+            background-color: #B33A3A;
+            color: white;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .popup-content button {
             background-color: #ff0066;
             color: white;
             border: none;
-            padding: 15px 20px;
+            border-radius: 30px;
+            padding: 10px 30px;
             font-size: 18px;
-            border-radius: 40px;
             cursor: pointer;
-            width: 100%;
             margin-top: 15px;
-            font-weight: bold;
-            transition: 0.2s ease-in-out;
         }
 
-        #confirmButton:hover {
+        .popup-content button:hover {
             background-color: #e6005c;
-            transform: scale(1.03);
         }
 
-        #alternativeOption {
+        .popup-content a {
             display: block;
-            margin-top: 12px;
+            margin-top: 10px;
             font-size: 14px;
-            color: #777;
             text-decoration: none;
+            color: #666;
         }
 
-        #alternativeOption:hover {
-            text-decoration: underline;
+        .popup-content a:hover {
+            color: #333;
         }
     </style>
 </head>
@@ -105,6 +136,7 @@
 
     <div class="popup" id="quizPopup">
         <div class="popup-content">
+            <!-- Caminho corrigido -->
             <img src="perfil.jpg" alt="Avatar">
             <h2 id="questionTitle">Você tem mais de 18 anos?</h2>
             <p id="questionText">Você quer ver meus conteúdos, mas antes me responda por favor</p>
@@ -123,7 +155,7 @@
             },
             {
                 title: "Qual a sua senha, amor?",
-                text: "Geovana Morais liberou uma senha exclusiva para você acessar meus contéudos",
+                text: "Nomemodelo liberou uma senha exclusiva para você acessar meus contéudos",
                 buttonText: "ENTRAR",
                 alternativeText: "Esqueci minha senha",
                 inputPlaceholder: "Digite sua senha aqui..."
@@ -131,23 +163,19 @@
         ];
 
         let currentQuestion = 0;
+
         const questionTitle = document.getElementById('questionTitle');
         const questionText = document.getElementById('questionText');
         const confirmButton = document.getElementById('confirmButton');
         const alternativeOption = document.getElementById('alternativeOption');
         let passwordInput;
-
-        const errorBox = document.createElement('div');
+        const errorBox = document.createElement('div');       
         const passwordError = document.createElement('div');
 
         function loadNextQuestion() {
             currentQuestion++;
 
-            if (currentQuestion === 1) {
-
-                /* 🔥 Evento fundamental para otimização: pessoa iniciou checkout */
-                fbq('track', 'InitiateCheckout');
-
+            if (currentQuestion === 1) {              
                 questionTitle.textContent = quizQuestions[currentQuestion].title;
                 questionText.textContent = quizQuestions[currentQuestion].text;
 
@@ -155,14 +183,6 @@
                 passwordInput.type = 'password';
                 passwordInput.placeholder = quizQuestions[currentQuestion].inputPlaceholder;
                 document.querySelector('.popup-content').insertBefore(passwordInput, confirmButton);
-
-                /* 🔥 Detecta início da digitação da senha */
-                passwordInput.addEventListener("input", () => {
-                    if (!window._paymentInfoSent) {
-                        fbq('trackCustom', 'AddPaymentInfo');
-                        window._paymentInfoSent = true;
-                    }
-                });
 
                 errorBox.classList.add('error-box');
                 errorBox.style.display = 'none';
@@ -174,7 +194,6 @@
 
                 confirmButton.textContent = quizQuestions[currentQuestion].buttonText;
                 alternativeOption.textContent = quizQuestions[currentQuestion].alternativeText;
-
                 alternativeOption.style.display = 'block';
                 confirmButton.onclick = validatePassword;
             }
@@ -183,34 +202,18 @@
         function validatePassword() {
             const userPassword = passwordInput.value;
 
-            if (userPassword === '2231') {
-
-                /* 🔥 Evento antes da liberação da página (intenção máxima) */
-                fbq('trackCustom', 'AccessPage');
-
-                /* 🔥 Purchase com deduplicação */
-                if (!localStorage.getItem("purchase_done")) {
-
-                    fbq('track', 'Purchase', {
-                        value: 1.00,
-                        currency: 'BRL',
-                        content_name: 'Acesso_Videos_Nomemodelo',
-                        content_category: 'Conteudo_Exclusivo',
-                        num_items: 30,
-                        eventID: 'purchase_' + Date.now()
-                    });
-
-                    localStorage.setItem("purchase_done", "1");
-                }
-
+            if (userPassword === 'SENHA') { 
+                fbq('track', 'Purchase', {
+                    value: 1.00,
+                    currency: 'BRL',
+                    content_name: 'Acesso_Videos_Nomemodelo',
+                    content_category: 'Conteudo_Exclusivo',
+                    num_items: 30 
+                });
+                
                 window.location.href = '/videos.html';
-
-            } else {
-
-                /* 🔥 Evento de erro — muito útil para otimização */
-                fbq('trackCustom', 'PasswordError');
-
-                errorBox.innerHTML = "Você digitou a senha errada. Verifique a senha enviada no WhatsApp e tente novamente.";
+            } else {              
+                errorBox.innerHTML = "Você digitou a senha errada. Por favor, verifique a senha que eu enviei via WhatsApp para você e tente novamente. Se continuar tendo problemas para realizar seu login, entre em contato comigo.";
                 errorBox.style.display = 'block';
                 passwordError.innerHTML = "Senha incorreta";
                 passwordError.style.display = 'block';
@@ -224,6 +227,5 @@
             loadNextQuestion();
         };
     </script>
-
 </body>
 </html>
