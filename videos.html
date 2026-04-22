@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meus Vídeos Exclusivos</title>
+
+<!-- PIXEL CORRETO -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];
+t=b.createElement(e);t.async=!0;
+t.src=v;
+s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}
+(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '1245756120497473');
+fbq('track', 'PageView');
+
+// otimização catálogo
+fbq('trackCustom', 'ViewVideoCatalog');
+</script>
+
+<noscript>
+<img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1245756120497473&ev=PageView&noscript=1"/>
+</noscript>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);
+color:white;
+min-height:100vh;
+padding:20px;
+}
+
+.header{
+text-align:center;
+padding:30px 20px;
+margin-bottom:30px;
+background:rgba(255,0,102,0.1);
+border-radius:15px;
+}
+
+.header h1{
+font-size:2.5em;
+color:#ff0066;
+margin-bottom:10px;
+}
+
+.video-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:25px;
+max-width:1400px;
+margin:0 auto;
+padding:20px;
+}
+
+.video-card{
+background:rgba(255,255,255,0.05);
+border-radius:15px;
+overflow:hidden;
+cursor:pointer;
+transition:.3s;
+}
+
+.video-card:hover{
+transform:translateY(-10px);
+}
+
+.video-thumbnail{
+width:100%;
+height:200px;
+background:linear-gradient(45deg,#ff0066,#ff6699);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:3em;
+position:relative;
+}
+
+.video-thumbnail::before{
+content:'▶';
+position:absolute;
+font-size:3em;
+}
+
+.video-info{
+padding:15px;
+}
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.95);
+justify-content:center;
+align-items:center;
+z-index:1000;
+}
+
+.modal.active{
+display:flex;
+}
+
+.modal video{
+width:90%;
+max-height:80vh;
+}
+
+.close-btn{
+position:absolute;
+top:20px;
+right:30px;
+font-size:2em;
+color:white;
+cursor:pointer;
+z-index:1001;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>💕 Meus Vídeos Exclusivos 💕</h1>
+<p>Conteúdo especial só para você!</p>
+</div>
+
+<div class="video-grid" id="videoGrid"></div>
+
+<div class="modal" id="videoModal">
+<span class="close-btn" onclick="closeModal()">×</span>
+<video id="modalVideo" controls playsinline></video>
+</div>
+
+<script>
+
+// =====================
+// LINKS ORDENADOS 1–30
+// =====================
+const links = {
+1:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540021/video1_vwpimz.mp4',
+2:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540069/video2_xybvfh.mp4',
+3:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540078/video3_ne9daw.mp4',
+4:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540079/video4_vpdmj1.mp4',
+5:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540074/video5_izqcaq.mp4',
+6:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540048/video6_hpvvo7.mp4',
+7:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540055/video7_zxxknf.mp4',
+8:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540092/video8_ocij2q.mp4',
+9:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540086/video9_rnmoh0.mp4',
+10:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540443/video10_lesvb8.mp4',
+11:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540463/video11_x71oug.mp4',
+12:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540454/video12_pzelae.mp4',
+13:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540464/video13_ersheh.mp4',
+14:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540346/video14_gggl4j.mp4',
+15:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540473/video15_vvgq8x.mp4',
+16:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540331/video16_twjqp8.mp4',
+17:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540266/video17_ghew0k.mp4',
+18:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540263/video18_i5oipu.mp4',
+19:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540264/video19_cmqxm2.mp4',
+20:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540363/video20_oujdxl.mp4',
+21:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540289/video21_wycalz.mp4',
+22:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540292/video22_nlk1dw.mp4',
+23:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540413/video23_qlejgh.mp4',
+24:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540450/video24_imnejs.mp4',
+25:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540373/video25_nifmru.mp4',
+26:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540420/video26_bzbiyl.mp4',
+27:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540437/video27_pvvcvr.mp4',
+28:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540471/video28_vcivjh.mp4',
+29:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540329/video29_eu47tw.mp4',
+30:'https://res.cloudinary.com/dhcffmlqh/video/upload/v1773540325/video30_uweuea.mp4'
+};
+
+// =====================
+// CRIA GRID
+// =====================
+const grid=document.getElementById('videoGrid');
+
+for(let i=1;i<=30;i++){
+const card=document.createElement('div');
+card.className='video-card';
+
+card.innerHTML=`
+<div class="video-thumbnail">${i}</div>
+<div class="video-info">
+<div>Vídeo ${i}</div>
+<div>Clique para assistir</div>
+</div>
+`;
+
+card.onclick=()=>openVideo(i);
+grid.appendChild(card);
+}
+
+// =====================
+// ABRIR VÍDEO + PIXEL
+// =====================
+const modal=document.getElementById('videoModal');
+const video=document.getElementById('modalVideo');
+
+function openVideo(num){
+
+fbq('trackCustom','VideoSelecionado',{
+video_numero:num
+});
+
+modal.classList.add('active');
+
+video.pause();
+video.removeAttribute('src');
+
+video.src=links[num];
+video.load();
+
+setTimeout(()=>{
+video.play().catch(()=>{});
+},100);
+}
+
+// =====================
+// FECHAR MODAL
+// =====================
+function closeModal(){
+modal.classList.remove('active');
+video.pause();
+video.removeAttribute('src');
+video.load();
+}
+
+modal.onclick=e=>{
+if(e.target===modal) closeModal();
+}
+
+</script>
+
+</body>
+</html>

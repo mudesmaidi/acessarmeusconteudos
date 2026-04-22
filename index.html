@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy - Meus Conteúdos!</title>
+
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+
+      fbq('init', '793871343759983');
+      fbq('track', 'PageView');
+    </script>
+
+    <noscript>
+      <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=793871343759983&ev=PageView&noscript=1"/>
+    </noscript>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #141414;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .popup {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: black;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .popup-content img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .popup-content h2 {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        .popup-content p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .popup-content button {
+            background-color: #ff0066;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .popup-content button:hover {
+            background-color: #e6005c;
+        }
+
+        .popup-content a {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #666;
+        }
+
+        .popup-content a:hover {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="popup">
+    <div class="popup-content">
+
+        <!-- ✔ IMAGEM CORRIGIDA VERCEL -->
+        <img src="/perfil/perfil.jpg" alt="Avatar">
+
+        <h2>Você tem mais de 18 anos?</h2>
+        <p>Você quer ver meus conteúdos, mas antes me responda por favor</p>
+        <button id="confirmButton">Sim, eu tenho</button>
+        <a href="/videos.html">Ainda não tenho 18 anos</a>
+    </div>
+</div>
+
+<script>
+document.getElementById('confirmButton').onclick = function() {
+
+    if (localStorage.getItem('purchase_sent')) {
+        window.location.href = '/videos.html';
+        return;
+    }
+
+    if (typeof fbq === 'function') {
+        fbq('track', 'Purchase', {
+            value: 1.00,
+            currency: 'BRL',
+            content_name: 'Acesso_Videos_Nomemodelo',
+            content_category: 'Conteudo_Exclusivo',
+            num_items: 30
+        });
+    }
+
+    localStorage.setItem('purchase_sent', 'true');
+
+    window.location.href = '/videos.html';
+};
+</script>
+
+</body>
+</html>
