@@ -4,144 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Acesso Liberado</title>
-
   <!-- Facebook Pixel -->
   <script>
     !function(f,b,e,v,n,t,s)
-    {
-      if(f.fbq)return;
-      n=f.fbq=function(){
-        n.callMethod ?
-        n.callMethod.apply(n,arguments) : n.queue.push(arguments)
-      };
-
-      if(!f._fbq)f._fbq=n;
-
-      n.push=n;
-      n.loaded=!0;
-      n.version='2.0';
-      n.queue=[];
-
-      t=b.createElement(e);
-      t.async=!0;
-      t.src=v;
-
-      s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)
-
-    }(window, document,'script',
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
 
     fbq('init', '1245756120497473');
-
     fbq('track', 'PageView');
-
-    // Dispara Purchase apenas 1 vez
-    if (!localStorage.getItem('purchase_sent')) {
-
-      fbq('track', 'Purchase', {
-        value: 37.00,
-        currency: 'BRL',
-        content_name: 'Conteudo Premium',
-        content_category: 'Conteudo Exclusivo'
-      });
-
-      localStorage.setItem('purchase_sent', 'true');
-    }
   </script>
-
   <noscript>
     <img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=1245756120497473&ev=PageView&noscript=1"/>
   </noscript>
-
+  <script>
+    window.addEventListener('load', function() {
+      if (!sessionStorage.getItem('purchase_sent')) {
+        fbq('track', 'Purchase', {
+          value: 37.00,
+          currency: 'BRL',
+          content_name: 'Conteudo Premium',
+          content_category: 'Conteudo Exclusivo'
+        });
+        sessionStorage.setItem('purchase_sent', 'true');
+      }
+    });
+  </script>
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
+    *{margin:0;padding:0;box-sizing:border-box;}
     body{
-      background:#111;
-      color:#fff;
-      font-family:Arial,sans-serif;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height:100vh;
-      padding:20px;
+      background:#111;color:#fff;font-family:Arial,sans-serif;
+      display:flex;justify-content:center;align-items:center;
+      min-height:100vh;padding:20px;
     }
-
     .container{
-      width:100%;
-      max-width:500px;
-      background:#1c1c1c;
-      border-radius:20px;
-      padding:30px;
-      text-align:center;
+      width:100%;max-width:500px;background:#1c1c1c;
+      border-radius:20px;padding:30px;text-align:center;
       box-shadow:0 0 30px rgba(0,0,0,.4);
     }
-
-    h1{
-      font-size:30px;
-      margin-bottom:15px;
-      color:#00d26a;
-    }
-
-    p{
-      font-size:17px;
-      color:#ccc;
-      line-height:1.5;
-      margin-bottom:25px;
-    }
-
+    h1{font-size:30px;margin-bottom:15px;color:#00d26a;}
+    p{font-size:17px;color:#ccc;line-height:1.5;margin-bottom:25px;}
     .btn{
-      display:inline-block;
-      width:100%;
-      background:#ff0066;
-      color:#fff;
-      text-decoration:none;
-      padding:18px;
-      border-radius:14px;
-      font-size:18px;
-      font-weight:bold;
-      transition:.2s;
+      display:inline-block;width:100%;background:#ff0066;color:#fff;
+      text-decoration:none;padding:18px;border-radius:14px;
+      font-size:18px;font-weight:bold;transition:.2s;
     }
-
-    .btn:hover{
-      opacity:.9;
-      transform:scale(1.02);
-    }
-
-    .info{
-      margin-top:20px;
-      font-size:13px;
-      color:#888;
-    }
+    .btn:hover{opacity:.9;transform:scale(1.02);}
+    .info{margin-top:20px;font-size:13px;color:#888;}
   </style>
 </head>
-
 <body>
-
   <div class="container">
-
     <h1>Sim, tenho mais de 18 anos</h1>
-
-    <p>
-      Seu acesso foi liberado com sucesso.
-      Clique no botão abaixo para entrar no conteúdo exclusivo.
-    </p>
-
-    <a href="/videos.html" class="btn">
-      ACESSAR CONTEÚDO
-    </a>
-
-    <div class="info">
-      Acesso liberado imediatamente após confirmação do pagamento.
-    </div>
-
+    <p>Seu acesso foi liberado com sucesso. Clique no botão abaixo para entrar no conteúdo exclusivo.</p>
+    <a href="/videos.html" class="btn">ACESSAR CONTEÚDO</a>
+    <div class="info">Acesso liberado imediatamente após confirmação do pagamento.</div>
   </div>
-
 </body>
 </html>
