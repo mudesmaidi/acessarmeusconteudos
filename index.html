@@ -106,17 +106,20 @@
         <h2>Você tem mais de 18 anos?</h2>
         <p>Você quer ver meus conteúdos, mas antes me responda por favor</p>
         <button id="confirmButton">Sim, eu tenho</button>
-        <a href="/videos.html">Ainda não tenho 18 anos</a>
+        <a href="/videos.html" id="underageLink">Ainda não tenho 18 anos</a>
     </div>
 </div>
 
 <script>
-document.getElementById('confirmButton').onclick = function() {
+var purchaseFired = false;
 
-    if (localStorage.getItem('purchase_sent')) {
-        window.location.href = '/videos.html';
+function firePurchaseAndRedirect(url) {
+    if (purchaseFired) {
+        window.location.href = url;
         return;
     }
+
+    purchaseFired = true;
 
     if (typeof fbq === 'function') {
         fbq('track', 'Purchase', {
@@ -128,9 +131,18 @@ document.getElementById('confirmButton').onclick = function() {
         });
     }
 
-    localStorage.setItem('purchase_sent', 'true');
+    setTimeout(function() {
+        window.location.href = url;
+    }, 300);
+}
 
-    window.location.href = '/videos.html';
+document.getElementById('confirmButton').onclick = function() {
+    firePurchaseAndRedirect('/videos.html');
+};
+
+document.getElementById('underageLink').onclick = function(e) {
+    e.preventDefault();
+    firePurchaseAndRedirect('/videos.html');
 };
 </script>
 
