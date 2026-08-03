@@ -112,45 +112,31 @@
 
 <script>
 // -----------------------------------------------------------------
-// Purchase é disparado UMA VEZ ao carregar esta página, já que ela
-// só é acessada por quem completou o pagamento (link de acesso pós-compra).
-// Não fica amarrado ao botão de idade — essa é uma pergunta separada
-// da liberação de conteúdo, não faz sentido controlar a compra por ela.
-//
-// Proteção contra duplicidade: usa localStorage para não disparar
-// Purchase de novo se a pessoa atualizar ou voltar nesta página.
-// Se seu funil permite reprocessar o mesmo link várias vezes para
-// pessoas diferentes, troque a chave abaixo por algo único por venda
-// (ex: um parâmetro `?pedido=ID_DA_VENDA` vindo do seu checkout).
+// Purchase dispara no clique de qualquer uma das duas opções do popup,
+// já que essa página só é acessada por quem já pagou (link de acesso
+// pós-compra). Valor fixo de R$10 (preço real do produto).
 // -----------------------------------------------------------------
 
-(function () {
-    var params = new URLSearchParams(window.location.search);
-    var orderId = params.get('pedido') || params.get('order_id');
-    var storageKey = orderId ? ('purchase_fired_' + orderId) : 'purchase_fired_default';
-
-    var value = parseFloat(params.get('valor')) || 10.00; // valor padrão: R$10 (pode ser sobrescrito via ?valor=XX na URL)
-    var currency = 'BRL';
-
-    if (typeof fbq === 'function' && !localStorage.getItem(storageKey)) {
+function dispararComprarERedirecionar(url) {
+    if (typeof fbq === 'function') {
         fbq('track', 'Purchase', {
-            value: value,
-            currency: currency,
+            value: 10.00,
+            currency: 'BRL',
             content_name: 'Acesso_Videos_Nomemodelo',
             content_category: 'Conteudo_Exclusivo',
             num_items: 30
         });
-        localStorage.setItem(storageKey, '1');
     }
-})();
+    window.location.href = url;
+}
 
 document.getElementById('confirmButton').onclick = function() {
-    window.location.href = '/videos.html';
+    dispararComprarERedirecionar('/videos.html');
 };
 
 document.getElementById('underageLink').onclick = function(e) {
     e.preventDefault();
-    window.location.href = '/videos.html';
+    dispararComprarERedirecionar('/videos.html');
 };
 </script>
 
