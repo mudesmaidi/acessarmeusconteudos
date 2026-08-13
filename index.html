@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy - Meus Conteúdos!</title>
-
     <script>
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -14,16 +13,13 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-
       fbq('init', '2502704343582855');
       fbq('track', 'PageView');
     </script>
-
     <noscript>
       <img height="1" width="1" style="display:none"
       src="https://www.facebook.com/tr?id=2502704343582855&ev=PageView&noscript=1"/>
     </noscript>
-
     <style>
         body {
             margin: 0;
@@ -35,7 +31,6 @@
             align-items: center;
             height: 100vh;
         }
-
         .popup {
             display: flex;
             position: fixed;
@@ -48,7 +43,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .popup-content {
             background-color: white;
             padding: 20px;
@@ -58,17 +52,14 @@
             width: 80%;
             max-width: 400px;
         }
-
         .popup-content h2 {
             margin: 10px 0;
             font-size: 20px;
         }
-
         .popup-content p {
             margin: 10px 0;
             font-size: 16px;
         }
-
         .popup-content button {
             background-color: #ff0066;
             color: white;
@@ -79,11 +70,9 @@
             cursor: pointer;
             margin-top: 15px;
         }
-
         .popup-content button:hover {
             background-color: #e6005c;
         }
-
         .popup-content a {
             display: block;
             margin-top: 10px;
@@ -91,32 +80,30 @@
             text-decoration: none;
             color: #666;
         }
-
         .popup-content a:hover {
             color: #333;
         }
     </style>
 </head>
-
 <body>
-
 <div class="popup">
     <div class="popup-content">
-
         <h2>Você tem mais de 18 anos?</h2>
         <p>Você quer ver meus conteúdos, mas antes me responda por favor</p>
         <button id="confirmButton">Sim, eu tenho</button>
         <a href="/videos.html" id="underageLink">Ainda não tenho 18 anos</a>
     </div>
 </div>
-
 <script>
 // -----------------------------------------------------------------
 // Purchase dispara no clique de qualquer uma das duas opções do popup,
 // já que essa página só é acessada por quem já pagou (link de acesso
 // pós-compra). Valor fixo de R$10 (preço real do produto).
+//
+// Delay de 250ms antes do redirect: dá tempo da requisição do evento
+// sair do navegador antes da página trocar de contexto (sem o delay,
+// o fbq() pode ser cortado no meio e o evento nunca chega ao Facebook).
 // -----------------------------------------------------------------
-
 function dispararComprarERedirecionar(url) {
     if (typeof fbq === 'function') {
         fbq('track', 'Purchase', {
@@ -127,18 +114,17 @@ function dispararComprarERedirecionar(url) {
             num_items: 30
         });
     }
-    window.location.href = url;
+    setTimeout(function () {
+        window.location.href = url;
+    }, 250);
 }
-
 document.getElementById('confirmButton').onclick = function() {
     dispararComprarERedirecionar('/videos.html');
 };
-
 document.getElementById('underageLink').onclick = function(e) {
     e.preventDefault();
     dispararComprarERedirecionar('/videos.html');
 };
 </script>
-
 </body>
 </html>
