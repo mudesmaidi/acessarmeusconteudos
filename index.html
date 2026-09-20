@@ -100,8 +100,11 @@ const orderId = params.get('id');
 const purchaseValue = parseFloat(params.get('valor')) || 10.00;
 const currency = 'BRL';
 
+// Chave por pedido: evita duplicar o mesmo pedido, mas libera pedidos novos
+const purchaseKey = 'purchase_fired_' + (orderId || 'default');
+
 function dispararComprarERedirecionar(url, isConfirmedPurchase) {
-    if (typeof fbq === 'function' && isConfirmedPurchase && !localStorage.getItem('purchase_fired')) {
+    if (typeof fbq === 'function' && isConfirmedPurchase && !localStorage.getItem(purchaseKey)) {
         fbq('track', 'Purchase', {
             value: purchaseValue,
             currency: currency,
@@ -109,7 +112,7 @@ function dispararComprarERedirecionar(url, isConfirmedPurchase) {
             content_category: 'Conteudo_Exclusivo',
             num_items: 30
         }, orderId ? { eventID: orderId } : undefined);
-        localStorage.setItem('purchase_fired', '1');
+        localStorage.setItem(purchaseKey, '1');
     }
     setTimeout(function () {
         window.location.href = url;
