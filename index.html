@@ -97,7 +97,7 @@
 <script>
 const params = new URLSearchParams(window.location.search);
 const orderId = params.get('id');
-const purchaseValue = 10.00;
+const purchaseValue = parseFloat(params.get('valor')) || 10.00;
 const currency = 'BRL';
 
 function dispararComprarERedirecionar(url, isConfirmedPurchase) {
