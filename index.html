@@ -100,19 +100,33 @@ const orderId = params.get('id');
 const purchaseValue = parseFloat(params.get('valor')) || 10.00;
 const currency = 'BRL';
 
-// Chave por pedido: evita duplicar o mesmo pedido, mas libera pedidos novos
+// Chave do localStorage agora é por pedido (orderId), não fixa.
+// Assim, cada pedido novo consegue disparar seu próprio Purchase,
+// mas o mesmo pedido não dispara duas vezes se a pessoa recarregar
+// a página ou clicar de novo.
 const purchaseKey = 'purchase_fired_' + (orderId || 'default');
 
 function dispararComprarERedirecionar(url, isConfirmedPurchase) {
-    if (typeof fbq === 'function' && isConfirmedPurchase && !localStorage.getItem(purchaseKey)) {
-        fbq('track', 'Purchase', {
-            value: purchaseValue,
-            currency: currency,
-            content_name: 'Acesso_Videos_Nomemodelo',
-            content_category: 'Conteudo_Exclusivo',
-            num_items: 30
-        }, orderId ? { eventID: orderId } : undefined);
-        localStorage.setItem(purchaseKey, '1');
+    if (isConfirmedPurchase && typeof fbq === 'function') {
+        // localStorage pode falhar (modo anônimo, ITP do Safari, alguns
+        // navegadores Android). Se falhar, dispara o Purchase mesmo assim
+        // em vez de travar a função silenciosamente.
+        let jaDisparado = false;
+        try {
+            jaDisparado = !!localStorage.getItem(purchaseKey);
+        } catch (e) {
+            jaDisparado = false;
+        }
+        if (!jaDisparado) {
+            fbq('track', 'Purchase', {
+                value: purchaseValue,
+                currency: currency,
+                content_name: 'Acesso_Videos_Nomemodelo',
+                content_category: 'Conteudo_Exclusivo',
+                num_items: 30
+            }, orderId ? { eventID: orderId } : undefined);
+            try { localStorage.setItem(purchaseKey, '1'); } catch (e) {}
+        }
     }
     setTimeout(function () {
         window.location.href = url;
