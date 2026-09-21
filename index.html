@@ -112,9 +112,10 @@
 
 <script>
 // -----------------------------------------------------------------
-// Purchase dispara no clique de qualquer uma das duas opções do popup,
-// já que essa página só é acessada por quem já pagou (link de acesso
-// pós-compra). Valor dinâmico via ?valor= na URL (fallback R$10).
+// Purchase dispara assim que a página carrega, já que essa página só
+// é acessada por quem já pagou (link de acesso pós-compra). Assim o
+// evento é contabilizado mesmo que o cliente não clique em nada.
+// Valor dinâmico via ?valor= na URL (fallback R$10).
 // -----------------------------------------------------------------
 
 const params = new URLSearchParams(window.location.search);
@@ -122,45 +123,39 @@ const orderId = params.get('id');
 const purchaseValue = parseFloat(params.get('valor')) || 10.00;
 const currency = 'BRL';
 
-// Chave por pedido: evita duplicar o mesmo pedido (reload, clique duplo),
+// Chave por pedido: evita duplicar o mesmo pedido (reload, voltar na página),
 // mas libera pedidos novos no mesmo navegador.
 const purchaseKey = 'purchase_fired_' + (orderId || 'default');
 
-function dispararComprarERedirecionar(url) {
-    if (typeof fbq === 'function') {
-        // localStorage pode falhar (modo anônimo, ITP do Safari, etc.).
-        // Se falhar, dispara o Purchase mesmo assim.
-        let jaDisparado = false;
-        try {
-            jaDisparado = !!localStorage.getItem(purchaseKey);
-        } catch (e) {
-            jaDisparado = false;
-        }
-        if (!jaDisparado) {
-            fbq('track', 'Purchase', {
-                value: purchaseValue,
-                currency: currency,
-                content_name: 'Acesso_Videos_Nomemodelo',
-                content_category: 'Conteudo_Exclusivo',
-                num_items: 30
-            }, orderId ? { eventID: orderId } : undefined);
-            try { localStorage.setItem(purchaseKey, '1'); } catch (e) {}
-        }
+if (typeof fbq === 'function') {
+    // localStorage pode falhar (modo anônimo, ITP do Safari, etc.).
+    // Se falhar, dispara o Purchase mesmo assim.
+    let jaDisparado = false;
+    try {
+        jaDisparado = !!localStorage.getItem(purchaseKey);
+    } catch (e) {
+        jaDisparado = false;
     }
-    // Delay antes do redirect pra garantir que a requisição do pixel
-    // saia antes do navegador trocar de página (crítico em mobile/3G).
-    setTimeout(function () {
-        window.location.href = url;
-    }, 250);
+    if (!jaDisparado) {
+        fbq('track', 'Purchase', {
+            value: purchaseValue,
+            currency: currency,
+            content_name: 'Acesso_Videos_Nomemodelo',
+            content_category: 'Conteudo_Exclusivo',
+            num_items: 30
+        }, orderId ? { eventID: orderId } : undefined);
+        try { localStorage.setItem(purchaseKey, '1'); } catch (e) {}
+    }
 }
 
+// Botões apenas levam para a página de conteúdos, sem precisar disparar nada.
 document.getElementById('confirmButton').onclick = function() {
-    dispararComprarERedirecionar('/videos.html');
+    window.location.href = '/videos.html';
 };
 
 document.getElementById('underageLink').onclick = function(e) {
     e.preventDefault();
-    dispararComprarERedirecionar('/videos.html');
+    window.location.href = '/videos.html';
 };
 </script>
 
