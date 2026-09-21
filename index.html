@@ -15,13 +15,13 @@
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
 
-      fbq('init', '1367542435470120');
+      fbq('init', '2502704343582855');
       fbq('track', 'PageView');
     </script>
 
     <noscript>
       <img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=1367542435470120&ev=PageView&noscript=1"/>
+      src="https://www.facebook.com/tr?id=2502704343582855&ev=PageView&noscript=1"/>
     </noscript>
 
     <style>
@@ -68,101 +68,3 @@
             margin: 10px 0;
             font-size: 16px;
         }
-
-        .popup-content button {
-            background-color: #ff0066;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 10px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .popup-content button:hover {
-            background-color: #e6005c;
-        }
-
-        .popup-content a {
-            display: block;
-            margin-top: 10px;
-            font-size: 14px;
-            text-decoration: none;
-            color: #666;
-        }
-
-        .popup-content a:hover {
-            color: #333;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="popup">
-    <div class="popup-content">
-
-        <h2>Você tem mais de 18 anos?</h2>
-        <p>Você quer ver meus conteúdos, mas antes me responda por favor</p>
-        <button id="confirmButton">Sim, eu tenho</button>
-        <a href="/videos.html" id="underageLink">Ainda não tenho 18 anos</a>
-    </div>
-</div>
-
-<script>
-// -----------------------------------------------------------------
-// Purchase dispara no clique de qualquer uma das duas opções do popup,
-// já que essa página só é acessada por quem já pagou (link de acesso
-// pós-compra). Valor dinâmico via ?valor= na URL (fallback R$10).
-// -----------------------------------------------------------------
-
-const params = new URLSearchParams(window.location.search);
-const orderId = params.get('id');
-const purchaseValue = parseFloat(params.get('valor')) || 10.00;
-const currency = 'BRL';
-
-// Chave por pedido: evita duplicar o mesmo pedido (reload, clique duplo),
-// mas libera pedidos novos no mesmo navegador.
-const purchaseKey = 'purchase_fired_' + (orderId || 'default');
-
-function dispararComprarERedirecionar(url) {
-    if (typeof fbq === 'function') {
-        // localStorage pode falhar (modo anônimo, ITP do Safari, etc.).
-        // Se falhar, dispara o Purchase mesmo assim.
-        let jaDisparado = false;
-        try {
-            jaDisparado = !!localStorage.getItem(purchaseKey);
-        } catch (e) {
-            jaDisparado = false;
-        }
-        if (!jaDisparado) {
-            fbq('track', 'Purchase', {
-                value: purchaseValue,
-                currency: currency,
-                content_name: 'Acesso_Videos_Nomemodelo',
-                content_category: 'Conteudo_Exclusivo',
-                num_items: 30
-            }, orderId ? { eventID: orderId } : undefined);
-            try { localStorage.setItem(purchaseKey, '1'); } catch (e) {}
-        }
-    }
-    // Delay antes do redirect pra garantir que a requisição do pixel
-    // saia antes do navegador trocar de página (crítico em mobile/3G).
-    setTimeout(function () {
-        window.location.href = url;
-    }, 250);
-}
-
-document.getElementById('confirmButton').onclick = function() {
-    dispararComprarERedirecionar('/videos.html');
-};
-
-document.getElementById('underageLink').onclick = function(e) {
-    e.preventDefault();
-    dispararComprarERedirecionar('/videos.html');
-};
-</script>
-
-</body>
-</html>
